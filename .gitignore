@@ -6,6 +6,9 @@ downloads/
 *.m4a
 *.part
 
+# Never commit YouTube login cookies
+cookies*.txt
+
 # Python
 __pycache__/
 *.py[cod]

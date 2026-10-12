@@ -45,15 +45,19 @@ def main(argv: list[str] | None = None) -> int:
         "--playlist", action="store_true", help="download the whole playlist if the URL has one"
     )
     parser.add_argument(
+        "--cookies", help="cookies.txt from a logged-in browser (fixes 'not a bot' errors)"
+    )
+    parser.add_argument(
         "--web", action="store_true", help="start the web UI instead of downloading"
     )
+    parser.add_argument("--host", default="127.0.0.1", help="web UI host (default: 127.0.0.1)")
     parser.add_argument("--port", type=int, default=5000, help="web UI port (default: 5000)")
     args = parser.parse_args(argv)
 
     if args.web:
         from .web import run
 
-        run(port=args.port)
+        run(host=args.host, port=args.port)
         return 0
 
     if not args.urls:
@@ -70,6 +74,7 @@ def main(argv: list[str] | None = None) -> int:
                 outdir=args.output,
                 playlist=args.playlist,
                 on_progress=_print_progress,
+                cookies=args.cookies,
             )
         except Exception as exc:  # yt-dlp raises DownloadError and friends
             failed += 1

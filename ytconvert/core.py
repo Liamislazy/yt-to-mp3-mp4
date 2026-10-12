@@ -44,7 +44,9 @@ class _SilentLogger:
     def error(self, msg: str) -> None: ...
 
 
-def _build_options(fmt: str, quality: str, outdir: Path, playlist: bool) -> dict:
+def _build_options(
+    fmt: str, quality: str, outdir: Path, playlist: bool, cookies: Optional[str]
+) -> dict:
     ffmpeg = ffmpeg_path()
     if ffmpeg is None:
         raise RuntimeError(
@@ -62,6 +64,10 @@ def _build_options(fmt: str, quality: str, outdir: Path, playlist: bool) -> dict
         "restrictfilenames": False,
         "windowsfilenames": True,
     }
+    if cookies:
+        # Netscape cookies.txt from a logged-in browser; helps on cloud servers
+        # where YouTube asks to "sign in to confirm you're not a bot".
+        opts["cookiefile"] = cookies
 
     if fmt == "mp3":
         bitrate = quality if quality in MP3_BITRATES else "192"
@@ -100,16 +106,18 @@ def download(
     outdir: str | Path = "downloads",
     playlist: bool = False,
     on_progress: Optional[ProgressCallback] = None,
+    cookies: Optional[str] = None,
 ) -> list[Result]:
     """Download ``url`` and convert it to ``fmt`` ("mp3" or "mp4").
 
     ``quality`` is an MP3 bitrate in kbps (e.g. "320") or an MP4 max height
-    (e.g. "1080"). Returns one Result per finished file.
+    (e.g. "1080"). ``cookies`` is an optional path to a cookies.txt file.
+    Returns one Result per finished file.
     """
     outdir = Path(outdir).expanduser().resolve()
     outdir.mkdir(parents=True, exist_ok=True)
 
-    opts = _build_options(fmt, quality, outdir, playlist)
+    opts = _build_options(fmt, quality, outdir, playlist, cookies)
     results: list[Result] = []
 
     def progress_hook(d: dict) -> None:

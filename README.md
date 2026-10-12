@@ -50,7 +50,8 @@ python -m ytconvert --playlist "https://www.youtube.com/playlist?list=..."
 | `-q, --quality` | MP3: `320` / `256` / `192` / `128` kbps. MP4: `best` / `2160` / `1440` / `1080` / `720` / `480` / `360` (max height) |
 | `-o, --output` | Output folder (default `./downloads`) |
 | `--playlist` | Download every video if the link points to a playlist |
-| `--web` / `--port` | Start the web UI (default port 5000) |
+| `--cookies` | `cookies.txt` from a logged-in browser (see below) |
+| `--web` / `--host` / `--port` | Start the web UI (default `127.0.0.1:5000`) |
 
 If you install the package (`pip install .`), the `ytconvert` command is
 available directly, e.g. `ytconvert -f mp4 URL`.
@@ -63,6 +64,50 @@ from ytconvert import download
 for r in download("https://youtu.be/VIDEO_ID", fmt="mp3", quality="320"):
     print(r.title, r.path)
 ```
+
+## Use it online for free
+
+### Option 1: GitHub Codespaces (no new account)
+
+1. On this repo's GitHub page click **Code → Codespaces → Create codespace on main**.
+2. The first start takes 2–3 minutes. The app starts in a terminal and a
+   **YT Convert** tab opens. If it doesn't, open the **Ports** tab and click
+   the globe icon next to port 5000.
+3. Next time, go to <https://github.com/codespaces> and open the same
+   codespace (≈30 s to start).
+
+Free accounts get 120 core-hours/month (≈60 hours on the default 2-core
+machine). A codespace stops on its own after 30 idle minutes; you can also
+stop it at <https://github.com/codespaces>. Port 5000 is private: only you,
+signed in to GitHub, can open it.
+
+### Option 2: Render (a permanent link, sleeps when idle)
+
+1. Sign in at <https://render.com> with your GitHub account.
+2. **New → Blueprint**, pick this repo. Render reads `render.yaml`.
+3. Set **YTC_PASSWORD**. Without it, anyone who finds the link can use
+   your server. Leave **YT_COOKIES** empty for now.
+4. You get a link like `https://yt-convert-xxxx.onrender.com`. The free
+   instance sleeps after 15 idle minutes, so the first visit takes about a
+   minute to wake it.
+
+### If YouTube says "Sign in to confirm you're not a bot"
+
+YouTube often blocks downloads coming from cloud servers. The fix is to give
+the app cookies from a logged-in YouTube session:
+
+1. Use a **spare Google account**, not your main one. YouTube can flag
+   accounts used this way.
+2. Export its YouTube cookies to a `cookies.txt` file. The yt-dlp guide has
+   the steps:
+   [Exporting YouTube cookies](https://github.com/yt-dlp/yt-dlp/wiki/Extractors#exporting-youtube-cookies).
+3. Paste the **contents** of that file into a secret named `YT_COOKIES`:
+   - Codespaces: <https://github.com/settings/codespaces> → **New secret** →
+     choose this repo, then restart the codespace.
+   - Render: the service's **Environment** page.
+
+Never commit `cookies.txt`; `.gitignore` already blocks it. Locally you can
+also pass it to the CLI with `--cookies cookies.txt`.
 
 ## Notes
 

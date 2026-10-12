@@ -1,0 +1,8 @@
+.git
+.claude
+downloads
+.devcontainer
+**/__pycache__
+*.mp3
+*.mp4
+cookies*.txt

@@ -92,7 +92,7 @@
 
   <ul id="jobs" aria-live="polite"></ul>
 
-  <footer>Files are also saved to the <code>downloads</code> folder next to the app. Only download content you have the right to.</footer>
+  <footer>{% if not cloud %}Files are also saved to the <code>downloads</code> folder next to the app. {% endif %}Only download content you have the right to.</footer>
 </main>
 
 <script>

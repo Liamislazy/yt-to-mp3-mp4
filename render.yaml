@@ -1,0 +1,14 @@
+# Render Blueprint: free web service built from the Dockerfile.
+# Render asks for the two values marked sync: false when you create it.
+services:
+  - type: web
+    name: yt-convert
+    runtime: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    autoDeploy: true
+    envVars:
+      - key: YTC_PASSWORD
+        sync: false
+      - key: YT_COOKIES
+        sync: false

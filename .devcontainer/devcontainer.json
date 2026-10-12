@@ -1,0 +1,18 @@
+{
+  // GitHub Codespaces: opens the repo in the cloud and starts the web UI on port 5000.
+  "name": "YT Convert",
+  "image": "mcr.microsoft.com/devcontainers/python:3.12",
+  "postCreateCommand": "bash .devcontainer/setup.sh",
+  // Runs in a terminal each time you open the codespace; keep that terminal open.
+  "postAttachCommand": "python -m ytconvert --web --host 0.0.0.0 --port 5000",
+  "forwardPorts": [5000],
+  "portsAttributes": {
+    "5000": { "label": "YT Convert", "onAutoForward": "openBrowser" }
+  },
+  "containerEnv": {
+    "YTC_CLOUD": "1",
+    "YTC_CLEANUP_HOURS": "1",
+    "YTC_DOWNLOAD_DIR": "/tmp/ytc-downloads"
+  },
+  "hostRequirements": { "cpus": 2 }
+}
