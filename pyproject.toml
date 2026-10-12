@@ -1,0 +1,24 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ytconvert"
+version = "1.0.0"
+description = "Convert YouTube links to MP3 or MP4 (CLI + local web UI)"
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = [
+    "yt-dlp>=2025.1.1",
+    "flask>=3.0",
+    "imageio-ffmpeg>=0.5",
+]
+
+[project.scripts]
+ytconvert = "ytconvert.cli:main"
+
+[tool.setuptools]
+packages = ["ytconvert"]
+
+[tool.setuptools.package-data]
+ytconvert = ["templates/*.html"]

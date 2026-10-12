@@ -1,0 +1,23 @@
+# Downloaded media
+downloads/
+*.mp3
+*.mp4
+*.webm
+*.m4a
+*.part
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+.venv/
+venv/
+
+# Editors / local tooling
+.vscode/
+.idea/
+.claude/
+.DS_Store
+Thumbs.db
