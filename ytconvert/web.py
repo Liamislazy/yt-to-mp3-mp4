@@ -46,12 +46,17 @@ def _require_password():
 
 
 def _cookies_file() -> str | None:
-    """Cookies for yt-dlp: a file path (YTC_COOKIES_FILE) or the raw cookies.txt
-    text (YT_COOKIES, handy as a hosting secret), which is written to a temp file."""
-    path = os.environ.get("YTC_COOKIES_FILE")
-    if path:
-        return path
-    text = os.environ.get("YT_COOKIES", "").strip()
+    """Cookies for yt-dlp, copied to a writable temp file (yt-dlp saves them back).
+
+    Sources, first match wins: YTC_COOKIES_FILE (a path), Render's secret file
+    /etc/secrets/cookies.txt, or YT_COOKIES (the raw cookies.txt text)."""
+    text = ""
+    for path in (os.environ.get("YTC_COOKIES_FILE"), "/etc/secrets/cookies.txt"):
+        if path and os.path.isfile(path):
+            text = Path(path).read_text(encoding="utf-8").strip()
+            break
+    if not text:
+        text = os.environ.get("YT_COOKIES", "").strip()
     if not text:
         return None
     fd, tmp = tempfile.mkstemp(prefix="ytc-cookies-", suffix=".txt")
