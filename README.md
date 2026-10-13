@@ -1,5 +1,9 @@
 # YT Convert — YouTube to MP3 / MP4
 
+> A small personal tool I vibe-coded so future me always has a quick way to
+> turn YouTube links into music and videos. It's built for my own use, not as
+> a polished product, so expect rough edges.
+
 Paste a YouTube link and get an **MP3** (audio) or **MP4** (video) file.
 Comes with a simple local **web UI** and a **command-line** tool. Built on
 [yt-dlp](https://github.com/yt-dlp/yt-dlp); ffmpeg is bundled through
@@ -101,10 +105,11 @@ the app cookies from a logged-in YouTube session:
 2. Export its YouTube cookies to a `cookies.txt` file. The yt-dlp guide has
    the steps:
    [Exporting YouTube cookies](https://github.com/yt-dlp/yt-dlp/wiki/Extractors#exporting-youtube-cookies).
-3. Paste the **contents** of that file into a secret named `YT_COOKIES`:
-   - Codespaces: <https://github.com/settings/codespaces> → **New secret** →
-     choose this repo, then restart the codespace.
-   - Render: the service's **Environment** page.
+3. Give the file's **contents** to the app:
+   - Render: **Environment → Secret Files → Add file**, name it
+     `cookies.txt`, paste the contents, then save and redeploy.
+   - Codespaces: <https://github.com/settings/codespaces> → **New secret**
+     named `YT_COOKIES` → choose this repo, then restart the codespace.
 
 Never commit `cookies.txt`; `.gitignore` already blocks it. Locally you can
 also pass it to the CLI with `--cookies cookies.txt`.
